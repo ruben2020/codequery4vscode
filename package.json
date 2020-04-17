@@ -17,7 +17,7 @@
 		"commands": [
 			{
 				"command": "codequery4vscode.helloWorld",
-				"title": "Hello World"
+				"title": "CodeQuery:Hello World"
 			}
 		]
 	},
