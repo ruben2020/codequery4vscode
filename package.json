@@ -10,17 +10,48 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:codequery4vscode.helloWorld"
+		"onCommand:codequery4vscode.searchSymbolFromSelection",
+		"onCommand:codequery4vscode.searchSymbolFromInputText"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "codequery4vscode.helloWorld",
-				"title": "CodeQuery:Hello World"
+			  "command": "codequery4vscode.searchSymbolFromInputText",
+			  "title": "CodeQuery:Search symbol",
+			  "category" : "CodeQuery"
+			},
+			{
+			  "command": "codequery4vscode.searchSymbolFromSelection",
+			  "title": "CodeQuery:Search symbol (from selection)",
+			  "category" : "CodeQuery"
 			}
-		]
-	},
+		],		
+		"menus": {
+		  "commandPalette": [
+			{
+			  "command": "codequery4vscode.searchSymbolFromInputText",
+			  "when": "!editorHasSelection",
+			  "title": "CodeQuery:Search symbol",
+			  "group" : "CodeQuery"
+			},
+			{
+			  "command": "codequery4vscode.searchSymbolFromSelection",
+			  "when": "false",
+			  "title": "CodeQuery:Search symbol (from selection)",
+			  "group" : "CodeQuery"
+			}
+		  ],
+		  "editor/context": [
+			{
+			  "command": "codequery4vscode.searchSymbolFromSelection",
+			  "when": "editorTextFocus && editorHasSelection",
+			  "title": "CodeQuery:Search symbol (from selection)",
+			  "group" : "CodeQuery"
+			}
+		  ]
+		}
+	  },
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
