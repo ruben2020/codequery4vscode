@@ -10,12 +10,18 @@
 		"Other"
 	],
 	"activationEvents": [
+		"onView:codequery4vscodeResults",
 		"onCommand:codequery4vscode.searchSymbolFromSelection",
 		"onCommand:codequery4vscode.searchSymbolFromInputText"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
+			{
+				"command": "codequery4vscode.refreshResults",
+				"title": "CodeQuery:Refresh results",
+				"category" : "CodeQuery"
+			},
 			{
 			  "command": "codequery4vscode.searchSymbolFromInputText",
 			  "title": "CodeQuery:Search symbol",
@@ -49,7 +55,32 @@
 			  "title": "CodeQuery:Search symbol (from selection)",
 			  "group" : "CodeQuery"
 			}
+		  ],
+		  "view/title": [
+			{
+			  "command": "codequery4vscode.refreshResults",
+			  "when": "view == codequery4vscodeResults",
+			  "title": "codequery4vscodeResults",
+			  "group" : "CodeQuery"
+			}
 		  ]
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "codequery4vscodeResultsContainer",
+					"title": "CodeQuery4VSCode",
+					"icon": "media/cq.svg"
+				}
+			]
+		},
+		"views": {
+			"codequery4vscodeResultsContainer": [
+				{
+					"id": "codequery4vscodeResults",
+					"name": "CodeQuery Results"
+				}
+			]
 		}
 	  },
 	"scripts": {

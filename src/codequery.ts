@@ -4,8 +4,27 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as cp from 'child_process';
+import { isNull } from 'util';
+import {SRAggregator, SResult} from './srchresults';
+import CQResultsProvider from './cqtreedataprov';
 
 export default class CQSearch {
+
+    private sra: SRAggregator;
+    private cqrp: CQResultsProvider|undefined;
+
+    constructor() {
+        this.sra = new SRAggregator;
+        this.cqrp = undefined;
+    }
+
+    set treedataprov(dataprov: CQResultsProvider) {
+        this.cqrp = dataprov;
+    }
+
+    get treedata() {
+        return this.sra.treedata;
+    }
 
     private search(srchstring: string, srchtype: string) {
         //console.log('Search for ' + srchstring + ' with search type ' + srchtype);
@@ -22,11 +41,33 @@ export default class CQSearch {
         }
         var cmd = `cqsearch -s ${dbpath} -p ${srchtype} -t ${srchstring} -l 0 -f -u`;
         cp.exec(cmd, (err, stdout, stderr) => {
-            console.log('=== stdout:\n ' + stdout);
-            console.log('=== stderr:\n ' + stderr);
-            if (err) {
-                console.log('=== error: ' + err);
-            }
+                if (isNull(err)) {
+                    //console.log(stdout);
+                    var lines = stdout.split("\n");
+                    this.sra.reset();
+                    for (var line of lines) {
+                        var cols = line.split("\t");
+                        if (cols.length === 3) {
+                            var stext = cols[0];
+                            var preview = cols[2];
+                            var fp = cols[1].split(":");
+                            if (fp.length === 2) {
+                                var fullpath = fp[0];
+                                var lineno = fp[1];
+                                var fn1 = fullpath.match(/([^\\\/]+)$/);
+                                var fn = fn1? fn1[0] : "";
+                                this.sra.addRecord(fn, fullpath, lineno, preview);
+                            }
+                        }
+                    }
+                    this.sra.sortRecords();
+                    if (this.cqrp) {
+                        this.cqrp.refresh();
+                    }
+                }
+                else {
+                    vscode.window.showInformationMessage('CodeQuery Error: ' + stdout);
+                }
         });
     }
 
