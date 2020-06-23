@@ -23,6 +23,31 @@ export default class CQResultsProvider implements vscode.TreeDataProvider<SResul
 		this._onDidChangeTreeData.fire();
 	}
 
+	openfile(uri: string) {
+		var uriparts = uri.split(":");
+		if (uriparts.length === 2) {
+			var fileuri = uriparts[0];
+			var linenum = uriparts[1];
+			var linenum1 = parseInt(linenum, 10);
+			var p1: number;
+			if (linenum1 > 2) {
+				p1 = linenum1 - 2;
+			} else if (linenum1 > 1) {
+				p1 = linenum1 - 1;
+			} else {
+				p1 = linenum1;
+			}
+			var pos1 = new vscode.Position(p1, 0);
+			var pos2 = new vscode.Position(linenum1, 0);
+			var range = new vscode.Range(pos1, pos2);
+			vscode.workspace.openTextDocument(fileuri).then(doc => {
+				vscode.window.showTextDocument(doc).then(editor => {
+					editor.revealRange(range);
+				});
+			  });
+		}
+	}
+
 	getTreeItem(element: SResult): vscode.TreeItem {
 		return element;
 	}

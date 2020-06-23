@@ -18,6 +18,11 @@
 	"contributes": {
 		"commands": [
 			{
+				"command": "codequery4vscode.openfile",
+				"title": "CodeQuery:Open File",
+				"category" : "CodeQuery"
+			},
+			{
 				"command": "codequery4vscode.refreshResults",
 				"title": "CodeQuery:Refresh results",
 				"category" : "CodeQuery"

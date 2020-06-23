@@ -20,6 +20,8 @@ export function activate(context: vscode.ExtensionContext) {
 	cq.treedataprov = cqtreedata;
 	vscode.window.registerTreeDataProvider('codequery4vscodeResults', cqtreedata);
 	context.subscriptions.push(vscode.commands.registerCommand(
+		'codequery4vscode.openfile', (uri: string) => cqtreedata.openfile(uri)));
+	context.subscriptions.push(vscode.commands.registerCommand(
 		'codequery4vscode.refreshResults', () => cqtreedata.refresh()));
 	context.subscriptions.push(vscode.commands.registerCommand(
 		'codequery4vscode.searchSymbolFromSelection', () => cq.searchSymbolFromSelectedText()));

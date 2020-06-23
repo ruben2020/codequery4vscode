@@ -1,6 +1,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
+import { setMaxListeners } from 'process';
 
 export class SRAggregator {
 	private toplevel: SResult[];
@@ -21,22 +22,23 @@ export class SRAggregator {
 		var fp = fullpath;
         if (vscode.workspace.workspaceFolders === undefined) {
 			vscode.window.showInformationMessage('CodeQuery Error: Could not get rootpath');
-			fp.replace(/^\$HOME/, "");
-            return `${fp}:${linenum}:0`;
+			return `${fp}:${linenum}`;
 		}
 		const rootpath = vscode.workspace.workspaceFolders[0];
-		fp.replace(/^\$HOME/, rootpath.uri.fsPath);
-		return `${fp}:${linenum}:0`;
+		if (process.env.HOME) {
+			fp = fp.replace('$HOME', process.env.HOME);
+		}
+		return `${fp}:${linenum}`;
 	}
 
 	public sortRecords() {
 		for (var item of this.toplevel) {
 			var cn = item.children;
 			cn.sort( (t1, t2) => {
-				if (t1.lineum > t2.lineum) {
+				if (t1.linenum > t2.linenum) {
 					return 1;
 				}
-				if (t1.lineum < t2.lineum) {
+				if (t1.linenum < t2.linenum) {
 					return -1;
 				}
 				return 0;
@@ -52,12 +54,14 @@ export class SRAggregator {
 		filename: string,
 		fullpath: string,
 		linenum: string,
-		previewtext: string
+		previewtext: string,
+		stext: string
 	) {
 		var fullpath2 = this.formatURI(fullpath, linenum);
-		var item2: SResult = new SResult(previewtext, parseInt(linenum, 10), vscode.TreeItemCollapsibleState.None, {
-			command: 'vscode.open',
-			title: '',
+		var labeltext = `${linenum}: ${previewtext}`;
+		var item2: SResult = new SResult(labeltext, parseInt(linenum, 10), stext, vscode.TreeItemCollapsibleState.None, {
+			command: 'codequery4vscode.openfile',
+			title: fullpath2,
 			arguments: [fullpath2]
 		});
 		var notfound: boolean = true;
@@ -71,7 +75,7 @@ export class SRAggregator {
 			}
 		}
 		if (notfound) {
-			var item: SResult = new SResult(filename, 0, vscode.TreeItemCollapsibleState.Collapsed);
+			var item: SResult = new SResult(filename, 0, '', vscode.TreeItemCollapsibleState.Collapsed);
 			var arr: SResult[] = [];
 			arr.push(item2);
 			item.children = arr;
@@ -86,7 +90,8 @@ export class SResult extends vscode.TreeItem {
 
 	constructor(
 		public readonly label: string,
-		public lineum: number,
+		public linenum: number,
+		public stext: string,
 		public readonly collapsibleState: vscode.TreeItemCollapsibleState,
         public readonly command?: vscode.Command
 	) {
@@ -95,11 +100,11 @@ export class SResult extends vscode.TreeItem {
 	}
 
 	get tooltip(): string {
-		return `${this.label}`;
+		return this.stext;
 	}
 
 	get description(): string {
-		return `${this.label}`;	
+		return this.stext;
 	}
 
 	get children(): SResult[] {

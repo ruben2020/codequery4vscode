@@ -56,7 +56,7 @@ export default class CQSearch {
                                 var lineno = fp[1];
                                 var fn1 = fullpath.match(/([^\\\/]+)$/);
                                 var fn = fn1? fn1[0] : "";
-                                this.sra.addRecord(fn, fullpath, lineno, preview);
+                                this.sra.addRecord(fn, fullpath, lineno, preview, stext);
                             }
                         }
                     }
