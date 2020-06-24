@@ -1,6 +1,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
+import * as fs from 'fs';
 import {SResult} from './srchresults';
 import CQSearch from './codequery';
 
@@ -40,6 +41,12 @@ export default class CQResultsProvider implements vscode.TreeDataProvider<SResul
 			var pos1 = new vscode.Position(p1, 0);
 			var pos2 = new vscode.Position(linenum1, 0);
 			var range = new vscode.Range(pos1, pos2);
+			if (!fs.existsSync(fileuri)) {
+				var fn1 = fileuri.match(/([^\\\/]+)$/);
+				var fn = fn1 ? fn1[0] : fileuri;
+				vscode.window.showInformationMessage('CodeQuery Error: Could not find ' + fn);
+				return;
+			}
 			vscode.workspace.openTextDocument(fileuri).then(doc => {
 				vscode.window.showTextDocument(doc).then(editor => {
 					editor.revealRange(range);
