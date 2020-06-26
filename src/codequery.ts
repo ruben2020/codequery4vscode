@@ -69,7 +69,7 @@ export default class CQSearch {
                     }
                 }
                 else {
-                    vscode.window.showInformationMessage('CodeQuery Error: ' + stdout);
+                    vscode.window.showInformationMessage('CodeQuery Error: ' + stdout + "\n" + stderr);
                 }
         });
     }
