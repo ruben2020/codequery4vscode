@@ -60,7 +60,7 @@ export default class CQSearch {
                             numofresults++;
                         }
                     }
-                    var item = this.sra.addSearchHeader(srchdescription, srchstring, numofresults, srchfrom);
+                    var item = this.sra.addSearchSummary(srchdescription, srchstring, numofresults, srchfrom);
                     if (this.cqrp) {
                         this.cqrp.refresh();
                         if (this.mytreeview) {

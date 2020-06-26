@@ -8,6 +8,7 @@ export class SRAggregator {
 
 	constructor () {
 		this.toplevel = [];
+		this.addSearchHelp();
 	}
 
 	get treedata(): SResult[] {
@@ -85,7 +86,16 @@ export class SRAggregator {
 		}
 	}
 
-    public addSearchHeader(srchdescription: string, srchstring: string, numofresults: number, srchfrom: string): SResult {
+	private addSearchHelp() {
+		var item = new SResult('[Click here to search]', 0, '', vscode.TreeItemCollapsibleState.None, {
+			command: 'codequery4vscode.searchFromInputText',
+			title: 'CodeQuery: Search from input text',
+			arguments: []
+		});
+		this.toplevel.unshift(item);
+	}
+
+	public addSearchSummary(srchdescription: string, srchstring: string, numofresults: number, srchfrom: string): SResult {
 		var item = new SResult('Search Summary', 0, '', vscode.TreeItemCollapsibleState.Expanded);
 		var arr: SResult[] = [];
 		var item1 = new SResult(`Search type: ${srchdescription}`, 0, '', vscode.TreeItemCollapsibleState.None);
@@ -110,6 +120,7 @@ export class SRAggregator {
 		item.children = arr;
 		this.sortRecords();
 		this.toplevel.unshift(item);
+		this.addSearchHelp();
 		return item3;
     }
 }
