@@ -78,6 +78,11 @@ export default class CQSearch {
         var stext = cols[0];
         var preview = cols[2];
         var fp = cols[1].split(":");
+        if (fp.length === 3) { // Windows
+            var s1 = fp.shift();
+            var s2 = `${s1}:${fp[0]}`.replace(/\//g, "\\");
+            fp[0] = s2;
+        }
         if (fp.length === 2) {
             var fullpath = fp[0];
             var lineno = fp[1];
@@ -90,6 +95,11 @@ export default class CQSearch {
     private searchResultsTwoColumns(cols: string[]) {
         var preview = cols[1];
         var fp = cols[0].split(":");
+        if (fp.length === 3) { // Windows
+            var s1 = fp.shift();
+            var s2 = `${s1}:${fp[0]}`.replace(/\//g, "\\");
+            fp[0] = s2;
+        }
         if (fp.length === 2) {
             var stext = preview;
             var fullpath = fp[0];
