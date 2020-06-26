@@ -2,7 +2,8 @@
 	"name": "codequery4vscode",
 	"displayName": "codequery4vscode",
 	"description": "CodeQuery extension for VSCode",
-	"version": "0.0.1",
+	"version": "0.1.0",
+	"publisher": "ruben2020",
 	"engines": {
 		"vscode": "^1.44.0"
 	},
@@ -11,62 +12,63 @@
 	],
 	"activationEvents": [
 		"onView:codequery4vscodeResults",
-		"onCommand:codequery4vscode.searchSymbolFromSelection",
-		"onCommand:codequery4vscode.searchSymbolFromInputText"
+		"onCommand:codequery4vscode.searchFromSelection",
+		"onCommand:codequery4vscode.searchFromInputText"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "codequery4vscode.openfile",
-				"title": "CodeQuery:Open File",
-				"category" : "CodeQuery"
+			  "command": "codequery4vscode.openfile",
+			  "title": "CodeQuery: Open File"
 			},
 			{
-				"command": "codequery4vscode.refreshResults",
-				"title": "CodeQuery:Refresh results",
-				"category" : "CodeQuery"
+			  "command": "codequery4vscode.refreshResults",
+			  "title": "CodeQuery: Refresh results"
 			},
 			{
-			  "command": "codequery4vscode.searchSymbolFromInputText",
-			  "title": "CodeQuery:Search symbol",
-			  "category" : "CodeQuery"
-			},
+			  "command": "codequery4vscode.searchFromInputText",
+			  "title": "CodeQuery: Search from input text"			},
 			{
-			  "command": "codequery4vscode.searchSymbolFromSelection",
-			  "title": "CodeQuery:Search symbol (from selection)",
-			  "category" : "CodeQuery"
-			}
+			  "command": "codequery4vscode.searchFromSelection",
+			  "title": "CodeQuery: Search from selected text"			},
+			{
+			  "command": "codequery4vscode.searchAgain",
+			  "title": "CodeQuery: Search again"			}
 		],		
 		"menus": {
 		  "commandPalette": [
 			{
-			  "command": "codequery4vscode.searchSymbolFromInputText",
-			  "when": "!editorHasSelection",
-			  "title": "CodeQuery:Search symbol",
-			  "group" : "CodeQuery"
+			  "command": "codequery4vscode.openfile",
+			  "when": "false",
+			  "title": "CodeQuery: Open File"
 			},
 			{
-			  "command": "codequery4vscode.searchSymbolFromSelection",
+			  "command": "codequery4vscode.refreshResults",
 			  "when": "false",
-			  "title": "CodeQuery:Search symbol (from selection)",
-			  "group" : "CodeQuery"
+			  "title": "CodeQuery: Refresh results"
+			},
+			{
+			  "command": "codequery4vscode.searchFromInputText",
+			  "when": "true",
+			  "title": "CodeQuery: Search from input text"
+			},
+			{
+			  "command": "codequery4vscode.searchFromSelection",
+			  "when": "false",
+			  "title": "CodeQuery: Search from selected text"
+			},
+			{
+			  "command": "codequery4vscode.searchAgain",
+			  "when": "false",
+			  "title": "CodeQuery:Search again"
 			}
 		  ],
 		  "editor/context": [
 			{
-			  "command": "codequery4vscode.searchSymbolFromSelection",
+			  "command": "codequery4vscode.searchFromSelection",
 			  "when": "editorTextFocus && editorHasSelection",
-			  "title": "CodeQuery:Search symbol (from selection)",
-			  "group" : "CodeQuery"
-			}
-		  ],
-		  "view/title": [
-			{
-			  "command": "codequery4vscode.refreshResults",
-			  "when": "view == codequery4vscodeResults",
-			  "title": "codequery4vscodeResults",
-			  "group" : "CodeQuery"
+			  "title": "CodeQuery: Search from selected text"
 			}
 		  ]
 		},
@@ -74,8 +76,8 @@
 			"activitybar": [
 				{
 					"id": "codequery4vscodeResultsContainer",
-					"title": "CodeQuery4VSCode",
-					"icon": "media/cq.svg"
+					"title": "CodeQuery",
+					"icon": "media/cq.png"
 				}
 			]
 		},
@@ -83,7 +85,7 @@
 			"codequery4vscodeResultsContainer": [
 				{
 					"id": "codequery4vscodeResults",
-					"name": "CodeQuery Results"
+					"name": "Search Results"
 				}
 			]
 		}

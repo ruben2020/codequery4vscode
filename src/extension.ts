@@ -18,16 +18,21 @@ export function activate(context: vscode.ExtensionContext) {
 	const cq = new CQSearch;
 	const cqtreedata = new CQResultsProvider(cq);
 	cq.treedataprov = cqtreedata;
-	vscode.window.registerTreeDataProvider('codequery4vscodeResults', cqtreedata);
+	const cqtreeview = vscode.window.createTreeView('codequery4vscodeResults', {
+		treeDataProvider: cqtreedata
+	  });
+	cq.treeview = cqtreeview;
 	context.subscriptions.push(vscode.commands.registerCommand(
 		'codequery4vscode.openfile', (uri: string) => cqtreedata.openfile(uri)));
 	context.subscriptions.push(vscode.commands.registerCommand(
 		'codequery4vscode.refreshResults', () => cqtreedata.refresh()));
 	context.subscriptions.push(vscode.commands.registerCommand(
-		'codequery4vscode.searchSymbolFromSelection', () => cq.searchSymbolFromSelectedText()));
+		'codequery4vscode.searchFromSelection', () => cq.searchFromSelectedText()));
 	context.subscriptions.push(vscode.commands.registerCommand(
-		'codequery4vscode.searchSymbolFromInputText', () => cq.searchSymbolFromInputText()));
-}
+		'codequery4vscode.searchFromInputText', () => cq.showSearchOptions()));
+	context.subscriptions.push(vscode.commands.registerCommand(
+		'codequery4vscode.searchAgain', (srchstring: string, srchfrom: string) => cq.showSearchOptions(srchstring, srchfrom)));
+	}
 
 // this method is called when your extension is deactivated
 export function deactivate() {}

@@ -9,7 +9,8 @@ export default class CQResultsProvider implements vscode.TreeDataProvider<SResul
 
 	private _onDidChangeTreeData: vscode.EventEmitter<SResult | undefined> = new vscode.EventEmitter<SResult | undefined>();
 	readonly onDidChangeTreeData: vscode.Event<SResult | undefined> = this._onDidChangeTreeData.event;
-    private workspaceRoot: string|undefined;
+	private workspaceRoot: string|undefined;
+	private node: SResult|undefined;
 
 	constructor(public cq: CQSearch) {
         if (vscode.workspace.workspaceFolders === undefined) {
@@ -17,7 +18,7 @@ export default class CQResultsProvider implements vscode.TreeDataProvider<SResul
             this.workspaceRoot = undefined;
         } else {
             this.workspaceRoot = vscode.workspace.workspaceFolders[0].name;
-        }
+		}
     }
 
 	refresh(): void {
@@ -70,9 +71,11 @@ export default class CQResultsProvider implements vscode.TreeDataProvider<SResul
 		} else {
 			return Promise.resolve(this.cq.treedata);
 		}
-
 	}
 
+	getParent(element: SResult): Thenable<SResult|null|undefined> {
+		return Promise.resolve(element.parent);
+	}
 
 }
 

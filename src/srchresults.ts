@@ -10,6 +10,13 @@ export class SRAggregator {
 		this.toplevel = [];
 	}
 
+	reveal(element: SResult, options?: { select?: boolean | undefined; focus?: boolean | undefined; expand?: number | boolean | undefined; } | undefined): Thenable<void> {
+		throw new Error("Method not implemented.");
+	}
+	dispose() {
+		throw new Error("Method not implemented.");
+	}
+
 	get treedata(): SResult[] {
 		return this.toplevel;
 	}
@@ -31,7 +38,7 @@ export class SRAggregator {
 		return `${fp}:${linenum}`;
 	}
 
-	public sortRecords() {
+	private sortRecords() {
 		for (var item of this.toplevel) {
 			var cn = item.children;
 			cn.sort( (t1, t2) => {
@@ -69,6 +76,7 @@ export class SRAggregator {
 			for (var item of this.toplevel) {
 				if (item.label === filename) {
 					notfound = false;
+					item2.parent = item;
 					item.children.push(item2);
 					break;
 				}
@@ -77,23 +85,53 @@ export class SRAggregator {
 		if (notfound) {
 			var item: SResult = new SResult(filename, 0, '', vscode.TreeItemCollapsibleState.Collapsed);
 			var arr: SResult[] = [];
+			item2.parent = item;
 			arr.push(item2);
 			item.children = arr;
 			this.toplevel.push(item);
 		}
 	}
+
+    public addSearchHeader(srchdescription: string, srchstring: string, numofresults: number, srchfrom: string): SResult {
+		var item = new SResult('Search Summary', 0, '', vscode.TreeItemCollapsibleState.Expanded);
+		var arr: SResult[] = [];
+		var item1 = new SResult(`Search type: ${srchdescription}`, 0, '', vscode.TreeItemCollapsibleState.None);
+		var item2 = new SResult(`Searched from: ${srchfrom}`, 0, '', vscode.TreeItemCollapsibleState.None);
+		var item3 = new SResult(`Search string: ${srchstring}`, 0, '', vscode.TreeItemCollapsibleState.None);
+		var item4 = new SResult(`Number of results: ${numofresults}`, 0, '', vscode.TreeItemCollapsibleState.None);
+		var item5 = new SResult('[Search again with another type]', 0, '', vscode.TreeItemCollapsibleState.None, {
+			command: 'codequery4vscode.searchAgain',
+			title: 'search again',
+			arguments: [srchstring, srchfrom]
+		});
+		item1.parent = item;
+		item2.parent = item;
+		item3.parent = item;
+		item4.parent = item;
+		item5.parent = item;
+		arr.push(item1);
+		arr.push(item2);
+		arr.push(item3);
+		arr.push(item4);
+		arr.push(item5);
+		item.children = arr;
+		this.sortRecords();
+		this.toplevel.unshift(item);
+		return item3;
+    }
 }
 
 export class SResult extends vscode.TreeItem {
 
 	private childrenLst: SResult[];
+	private myparent: SResult|undefined;
 
 	constructor(
 		public readonly label: string,
 		public linenum: number,
 		public stext: string,
 		public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-        public readonly command?: vscode.Command
+        public readonly command?: vscode.Command,
 	) {
 		super(label, collapsibleState);
 		this.childrenLst = [];
@@ -113,6 +151,14 @@ export class SResult extends vscode.TreeItem {
 
 	set children(kids: SResult[]) {
 		this.childrenLst = kids;
+	}
+
+	set parent (prent: SResult|undefined) {
+		this.myparent = prent;
+	}
+
+	get parent(): SResult|undefined {
+		return this.myparent;
 	}
 
 }
