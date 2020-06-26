@@ -10,13 +10,6 @@ export class SRAggregator {
 		this.toplevel = [];
 	}
 
-	reveal(element: SResult, options?: { select?: boolean | undefined; focus?: boolean | undefined; expand?: number | boolean | undefined; } | undefined): Thenable<void> {
-		throw new Error("Method not implemented.");
-	}
-	dispose() {
-		throw new Error("Method not implemented.");
-	}
-
 	get treedata(): SResult[] {
 		return this.toplevel;
 	}
