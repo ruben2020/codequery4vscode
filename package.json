@@ -4,6 +4,9 @@
 	"description": "CodeQuery extension for VSCode",
 	"version": "0.1.0",
 	"publisher": "ruben2020",
+	"license": "MIT",
+	"keywords": ["CodeQuery", "codequery", "source analysis", "source search", "cscope", "ctags", "starscope"],
+	"icon": "https://github.com/ruben2020/codequery4vscode/raw/master/media/logo.png",
 	"engines": {
 		"vscode": "^1.44.0"
 	},
