@@ -5,8 +5,16 @@
 	"version": "0.1.0",
 	"publisher": "ruben2020",
 	"license": "MIT",
-	"keywords": ["CodeQuery", "codequery", "source analysis", "source search", "cscope", "ctags", "starscope"],
-	"icon": "https://github.com/ruben2020/codequery4vscode/raw/master/media/logo.png",
+	"keywords": [
+		"CodeQuery",
+		"codequery",
+		"source analysis",
+		"source search",
+		"cscope",
+		"ctags",
+		"starscope"
+	],
+	"icon": "media/logo.png",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/ruben2020/codequery4vscode.git"
@@ -26,58 +34,61 @@
 	"contributes": {
 		"commands": [
 			{
-			  "command": "codequery4vscode.openfile",
-			  "title": "CodeQuery: Open File"
+				"command": "codequery4vscode.openfile",
+				"title": "CodeQuery: Open File"
 			},
 			{
-			  "command": "codequery4vscode.refreshResults",
-			  "title": "CodeQuery: Refresh results"
+				"command": "codequery4vscode.refreshResults",
+				"title": "CodeQuery: Refresh results"
 			},
 			{
-			  "command": "codequery4vscode.searchFromInputText",
-			  "title": "CodeQuery: Search from input text"			},
+				"command": "codequery4vscode.searchFromInputText",
+				"title": "CodeQuery: Search from input text"
+			},
 			{
-			  "command": "codequery4vscode.searchFromSelection",
-			  "title": "CodeQuery: Search from selected text"			},
+				"command": "codequery4vscode.searchFromSelection",
+				"title": "CodeQuery: Search from selected text"
+			},
 			{
-			  "command": "codequery4vscode.searchAgain",
-			  "title": "CodeQuery: Search again"			}
-		],		
+				"command": "codequery4vscode.searchAgain",
+				"title": "CodeQuery: Search again"
+			}
+		],
 		"menus": {
-		  "commandPalette": [
-			{
-			  "command": "codequery4vscode.openfile",
-			  "when": "false",
-			  "title": "CodeQuery: Open File"
-			},
-			{
-			  "command": "codequery4vscode.refreshResults",
-			  "when": "false",
-			  "title": "CodeQuery: Refresh results"
-			},
-			{
-			  "command": "codequery4vscode.searchFromInputText",
-			  "when": "true",
-			  "title": "CodeQuery: Search from input text"
-			},
-			{
-			  "command": "codequery4vscode.searchFromSelection",
-			  "when": "false",
-			  "title": "CodeQuery: Search from selected text"
-			},
-			{
-			  "command": "codequery4vscode.searchAgain",
-			  "when": "false",
-			  "title": "CodeQuery:Search again"
-			}
-		  ],
-		  "editor/context": [
-			{
-			  "command": "codequery4vscode.searchFromSelection",
-			  "when": "editorTextFocus && editorHasSelection",
-			  "title": "CodeQuery: Search from selected text"
-			}
-		  ]
+			"commandPalette": [
+				{
+					"command": "codequery4vscode.openfile",
+					"when": "false",
+					"title": "CodeQuery: Open File"
+				},
+				{
+					"command": "codequery4vscode.refreshResults",
+					"when": "false",
+					"title": "CodeQuery: Refresh results"
+				},
+				{
+					"command": "codequery4vscode.searchFromInputText",
+					"when": "true",
+					"title": "CodeQuery: Search from input text"
+				},
+				{
+					"command": "codequery4vscode.searchFromSelection",
+					"when": "false",
+					"title": "CodeQuery: Search from selected text"
+				},
+				{
+					"command": "codequery4vscode.searchAgain",
+					"when": "false",
+					"title": "CodeQuery:Search again"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "codequery4vscode.searchFromSelection",
+					"when": "editorTextFocus && editorHasSelection",
+					"title": "CodeQuery: Search from selected text"
+				}
+			]
 		},
 		"viewsContainers": {
 			"activitybar": [
@@ -96,7 +107,7 @@
 				}
 			]
 		}
-	  },
+	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
