@@ -14,8 +14,7 @@ The databases of cscope and ctags would be processed by the `cqmakedb` tool to g
 The CodeQuery database file can be queried on Visual Studio Code using this extension. This Visual Studio Code Extension makes use of Codequery CLI tool `cqsearch` to perform the queries.
 
 
-
-## Latest version = 0.1.0
+## Latest version = 0.1.1
 
 Please read [CHANGELOG](CHANGELOG.md) to discover the latest changes in this release.
 
@@ -37,7 +36,7 @@ Please read [CHANGELOG](CHANGELOG.md) to discover the latest changes in this rel
 
 ## What does it cost? How is it licensed?
 
-This software is freeware and free open source software. It can be used in a commercial environment for free, for an unlimited amount of time. The same applies to [CodeQuery](https://github.com/ruben2020/codequery).
+This software is freeware and free open source software. It can be used in a commercial environment for free, for an unlimited time. The same applies to [CodeQuery](https://github.com/ruben2020/codequery).
 
 This software is licensed under the MIT License. Please see the [LICENSE](LICENSE) file for more details.
 
@@ -229,7 +228,7 @@ Website: [codequery4vscode website](https://github.com/ruben2020/codequery4vscod
 * Provide feedback, new ideas, suggestions etc. What would you like to see?
 * Tell your friends, recommend it on StackOverflow or social media
 * Fix bugs (see Issues tab)
-* Give us a good rating and review at the [Visual Studio Code Extension Marketplace](https://marketplace.visualstudio.com/VSCode)
+* Give us a good rating and review at the [Visual Studio Code Extension Marketplace](https://marketplace.visualstudio.com/VSCode) page [ruben2020.codequery4vscode](https://marketplace.visualstudio.com/items?itemName=ruben2020.codequery4vscode)
 
 
 ## List of Contributors
