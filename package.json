@@ -7,6 +7,10 @@
 	"license": "MIT",
 	"keywords": ["CodeQuery", "codequery", "source analysis", "source search", "cscope", "ctags", "starscope"],
 	"icon": "https://github.com/ruben2020/codequery4vscode/raw/master/media/logo.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ruben2020/codequery4vscode.git"
+	},
 	"engines": {
 		"vscode": "^1.44.0"
 	},
