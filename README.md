@@ -67,7 +67,7 @@ In Visual Studio Code, click on the Extension button on the left panel (or alter
 
 Please follow the instructions found on the [CodeQuery](https://github.com/ruben2020/codequery) page to create a CodeQuery database called `cq.db` (with exactly this filename and extension) on the base folder of your source code.
 
-Let me provide an example here on how to query the source code of CodeQuery itself.
+Let me provide an example here on how to prepare the source code of CodeQuery itself.
 
 In Linux or Mac, follow these steps:
 
@@ -122,7 +122,7 @@ There are 3 ways to search or query code using this extension:
 
 * Method 1: Accessing codequery4vscode from the Command Palette, then typing a search phrase into an inputbox
 * Method 2: Selecting text of code from a file, and using that to search, from the right-click dropdown menu
-* Method 3: Clicking on the `Click here to search` line on the codequery4vscode treeview, and then typing a search phrase into an inputbox
+* Method 3: Clicking on the `[Click here to search]` line on the codequery4vscode treeview, and then typing a search phrase into an inputbox
 
 The next sections show these.
 
@@ -225,6 +225,7 @@ Website: [codequery4vscode website](https://github.com/ruben2020/codequery4vscod
 * Provide feedback, new ideas, suggestions etc. What would you like to see?
 * Tell your friends, recommend it on StackOverflow or social media
 * Fix bugs (see Issues tab)
+* Give us a good rating and review at the [Visual Studio Code Extension Marketplace](https://marketplace.visualstudio.com/VSCode)
 
 
 ## List of Contributors
