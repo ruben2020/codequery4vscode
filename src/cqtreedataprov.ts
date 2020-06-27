@@ -26,12 +26,7 @@ export default class CQResultsProvider implements vscode.TreeDataProvider<SResul
 	}
 
 	openfile(uri: string) {
-		var uriparts = uri.split(":");
-		if (uriparts.length === 3) { // Windows
-			var s1 = uriparts.shift();
-			var s2 = `${s1}:${uriparts[0]}`;
-			uriparts[0] = s2;
-		}
+		var uriparts = uri.split("\t");
 		if (uriparts.length === 2) {
 			var fileuri = uriparts[0];
 			var linenum = uriparts[1];

@@ -23,13 +23,13 @@ export class SRAggregator {
 		var fp = fullpath;
         if (vscode.workspace.workspaceFolders === undefined) {
 			vscode.window.showInformationMessage('CodeQuery Error: Could not get rootpath');
-			return `${fp}:${linenum}`;
+			return `${fp}\t${linenum}`;
 		}
 		const rootpath = vscode.workspace.workspaceFolders[0];
 		if (process.env.HOME) {
 			fp = fp.replace('$HOME', process.env.HOME);
 		}
-		return `${fp}:${linenum}`;
+		return `${fp}\t${linenum}`;
 	}
 
 	private sortRecords() {
