@@ -6,6 +6,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.2.0] - 2020-06-28
+- Improved reveal range for source file, when opened from treeview
+
 ## [0.1.1] - 2020-06-28
 - README update with Marketplace links
 

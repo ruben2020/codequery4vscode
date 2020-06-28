@@ -21,11 +21,6 @@ export class SRAggregator {
 
 	private formatURI(fullpath: string, linenum: string): string {
 		var fp = fullpath;
-        if (vscode.workspace.workspaceFolders === undefined) {
-			vscode.window.showInformationMessage('CodeQuery Error: Could not get rootpath');
-			return `${fp}\t${linenum}`;
-		}
-		const rootpath = vscode.workspace.workspaceFolders[0];
 		if (process.env.HOME) {
 			fp = fp.replace('$HOME', process.env.HOME);
 		}

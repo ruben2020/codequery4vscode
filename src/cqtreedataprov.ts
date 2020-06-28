@@ -30,18 +30,6 @@ export default class CQResultsProvider implements vscode.TreeDataProvider<SResul
 		if (uriparts.length === 2) {
 			var fileuri = uriparts[0];
 			var linenum = uriparts[1];
-			var linenum1 = parseInt(linenum, 10);
-			var p1: number;
-			if (linenum1 > 2) {
-				p1 = linenum1 - 2;
-			} else if (linenum1 > 1) {
-				p1 = linenum1 - 1;
-			} else {
-				p1 = linenum1;
-			}
-			var pos1 = new vscode.Position(p1, 0);
-			var pos2 = new vscode.Position(linenum1, 0);
-			var range = new vscode.Range(pos1, pos2);
 			if (!fs.existsSync(fileuri)) {
 				var fn1 = fileuri.match(/([^\\\/]+)$/);
 				var fn = fn1 ? fn1[0] : fileuri;
@@ -50,10 +38,36 @@ export default class CQResultsProvider implements vscode.TreeDataProvider<SResul
 			}
 			vscode.workspace.openTextDocument(fileuri).then(doc => {
 				vscode.window.showTextDocument(doc).then(editor => {
-					editor.revealRange(range);
+					var linenum1 = parseInt(linenum, 10);
+					var remaining = editor.document.lineCount - linenum1;
+					editor.revealRange(this.calcRange(linenum1, remaining));
 				});
 			  });
 		}
+	}
+
+	private calcRange(linenum1: number, remaining: number): vscode.Range {
+		var p1 = linenum1;
+		var p2 = linenum1;
+		var d: number;
+		d = 5;
+		while (d >= 0) {
+			if (linenum1 > d) {
+				p1 = linenum1 - d;
+				break;
+			} else {d--;}
+		}
+		d = 3;
+		while (d >= 0) {
+			if (remaining >= d) {
+				p2 = linenum1 + d;
+				break;
+			} else {d--;}
+		}
+		var pos1 = new vscode.Position(p1, 0);
+		var pos2 = new vscode.Position(p2, 0);
+		var range = new vscode.Range(pos1, pos2);
+		return range;
 	}
 
 	getTreeItem(element: SResult): vscode.TreeItem {
