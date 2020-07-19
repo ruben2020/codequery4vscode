@@ -6,6 +6,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.3.0] - 2020-07-19
+- Upgraded minimum version of lodash (a dependency), to fix security vulnerability
+
 ## [0.2.0] - 2020-06-28
 - Improved reveal range for source file, when opened from treeview
 
