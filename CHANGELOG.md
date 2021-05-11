@@ -6,6 +6,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.4.0] - 2021-05-12
+- Updated with latest dependencies, to fix security vulnerabilities
+
 ## [0.3.0] - 2020-07-19
 - Upgraded minimum version of lodash (a dependency), to fix security vulnerability
 
@@ -17,3 +20,4 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.1.0] - 2020-06-28
 - Initial release
+

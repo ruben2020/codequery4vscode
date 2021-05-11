@@ -22,7 +22,7 @@ export default class CQResultsProvider implements vscode.TreeDataProvider<SResul
     }
 
 	refresh(): void {
-		this._onDidChangeTreeData.fire();
+		this._onDidChangeTreeData.fire(undefined);
 	}
 
 	openfile(uri: string) {
