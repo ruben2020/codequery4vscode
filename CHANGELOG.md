@@ -6,7 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
-## [0.4.0] - 2021-05-12
+## [0.4.1] - 2021-05-12
 - Updated with latest dependencies, to fix security vulnerabilities
 
 ## [0.3.0] - 2020-07-19

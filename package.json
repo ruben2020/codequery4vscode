@@ -2,7 +2,7 @@
 	"name": "codequery4vscode",
 	"displayName": "codequery4vscode",
 	"description": "CodeQuery extension for VSCode",
-	"version": "0.4.0",
+	"version": "0.4.1",
 	"publisher": "ruben2020",
 	"license": "MIT",
 	"keywords": [
