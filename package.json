@@ -27,7 +27,8 @@
 	],
 	"activationEvents": [
 		"onView:codequery4vscodeResults",
-		"onCommand:codequery4vscode.searchFromSelection",
+		"onCommand:codequery4vscode.searchFromSelectionExact",
+		"onCommand:codequery4vscode.searchFromSelectionFuzzy",
 		"onCommand:codequery4vscode.searchFromInputText"
 	],
 	"main": "./out/extension.js",
@@ -46,8 +47,12 @@
 				"title": "CodeQuery: Search from input text"
 			},
 			{
-				"command": "codequery4vscode.searchFromSelection",
-				"title": "CodeQuery: Search from selected text"
+				"command": "codequery4vscode.searchFromSelectionFuzzy",
+				"title": "CodeQuery: Search from selected text (fuzzy)"
+			},
+			{
+				"command": "codequery4vscode.searchFromSelectionExact",
+				"title": "CodeQuery: Search from selected text (exact)"
 			},
 			{
 				"command": "codequery4vscode.searchAgain",
@@ -72,9 +77,14 @@
 					"title": "CodeQuery: Search from input text"
 				},
 				{
-					"command": "codequery4vscode.searchFromSelection",
+					"command": "codequery4vscode.searchFromSelectionFuzzy",
 					"when": "false",
-					"title": "CodeQuery: Search from selected text"
+					"title": "CodeQuery: Search from selected text (fuzzy)"
+				},
+				{
+					"command": "codequery4vscode.searchFromSelectionExact",
+					"when": "false",
+					"title": "CodeQuery: Search from selected text (exact)"
 				},
 				{
 					"command": "codequery4vscode.searchAgain",
@@ -84,9 +94,14 @@
 			],
 			"editor/context": [
 				{
-					"command": "codequery4vscode.searchFromSelection",
+					"command": "codequery4vscode.searchFromSelectionFuzzy",
 					"when": "editorTextFocus && editorHasSelection",
-					"title": "CodeQuery: Search from selected text"
+					"title": "CodeQuery: Search from selected text (fuzzy)"
+				},
+				{
+					"command": "codequery4vscode.searchFromSelectionExact",
+					"when": "editorTextFocus && editorHasSelection",
+					"title": "CodeQuery: Search from selected text (exact)"
 				}
 			]
 		},

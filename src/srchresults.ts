@@ -134,8 +134,11 @@ export class SResult extends vscode.TreeItem {
 	) {
 		super(label, collapsibleState);
 		this.childrenLst = [];
+		this.tooltip = this.stext;
+		this.description = this.stext;
 	}
 
+/*
 	get tooltip(): string {
 		return this.stext;
 	}
@@ -143,7 +146,7 @@ export class SResult extends vscode.TreeItem {
 	get description(): string {
 		return this.stext;
 	}
-
+*/
 	get children(): SResult[] {
 		return this.childrenLst;
 	}

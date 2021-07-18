@@ -27,7 +27,9 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand(
 		'codequery4vscode.refreshResults', () => cqtreedata.refresh()));
 	context.subscriptions.push(vscode.commands.registerCommand(
-		'codequery4vscode.searchFromSelection', () => cq.searchFromSelectedText()));
+		'codequery4vscode.searchFromSelectionFuzzy', () => cq.searchFromSelectedTextFuzzy()));
+	context.subscriptions.push(vscode.commands.registerCommand(
+		'codequery4vscode.searchFromSelectionExact', () => cq.searchFromSelectedTextExact()));
 	context.subscriptions.push(vscode.commands.registerCommand(
 		'codequery4vscode.searchFromInputText', () => cq.showSearchOptions()));
 	context.subscriptions.push(vscode.commands.registerCommand(

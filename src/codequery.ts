@@ -31,7 +31,7 @@ export default class CQSearch {
         this.mytreeview = tview;
     }
 
-    private search(srchstring: string, srchtype: string, srchdescription: string, srchfrom: string) {
+    private search(srchstring: string, srchtype: string, srchdescription: string, srchfrom: string, exact: boolean) {
         //console.log('Search for ' + srchstring + ' with search type ' + srchtype);
         if (srchstring.length === 0) {return;}
         if (vscode.workspace.workspaceFolders === undefined) {
@@ -44,7 +44,10 @@ export default class CQSearch {
             vscode.window.showInformationMessage('CodeQuery Error: Could not find' + dbpath);
             return;
         }
-        var cmd = `cqsearch -s ${dbpath} -p ${srchtype} -t ${srchstring} -l 0 -f -u`;
+        var exactstr : string;
+        if (exact) {exactstr = '-e';}
+        else {exactstr = '-f';}
+        var cmd = `cqsearch -s ${dbpath} -p ${srchtype} -t ${srchstring} -l 0 ${exactstr} -u`;
         cp.exec(cmd, (err, stdout, stderr) => {
                 if (isNull(err)) {
                     var numofresults = 0;
@@ -113,7 +116,7 @@ export default class CQSearch {
     private searchFromInputText(srchtype: string, titletext: string, srchtypetxt: string) {
         var input = vscode.window.createInputBox();
         input.title = titletext;
-        input.prompt = "Enter text to search";
+        input.prompt = 'Enter text to search; in quotes ("") for exact, or without, for fuzzy';
         input.enabled = true;
         input.busy = false;
         input.password = false;
@@ -121,13 +124,23 @@ export default class CQSearch {
         input.onDidAccept(async () => {
                 var inputtext = input.value;
                 input.dispose();
-                this.search(inputtext, srchtype, srchtypetxt, 'inputbox');
+                inputtext = inputtext.trim();
+                var srchstr = inputtext;
+                var exact = false;
+                if ((inputtext.length > 1) &&
+                (((inputtext.charAt(0) === '\x27')&&(inputtext.charAt(inputtext.length - 1) === '\x27'))||
+                ((inputtext.charAt(0) === '\x22')&&(inputtext.charAt(inputtext.length - 1) === '\x22'))))
+                    {
+                        srchstr = inputtext.replace(/[x22|x27]/g,'');
+                        exact = true;
+                    }
+                this.search(srchstr, srchtype, srchtypetxt, 'inputbox', exact);
             }
         );
         input.show();
     }
 
-    public showSearchOptions(srchtxt?: string|undefined, srchfrom?: string|undefined) {
+    public showSearchOptions(srchtxt?: string|undefined, srchfrom?: string|undefined, exact?: boolean|undefined) {
         vscode.window.showQuickPick([
             '1: Symbol',
             '2: Function or macro definition',
@@ -150,7 +163,20 @@ export default class CQSearch {
                         var sfrom: string;
                         if (srchfrom) {sfrom = srchfrom;}
                         else {sfrom = 'text selection';}
-                        this.search(srchtxt, result1[0], result1[1], sfrom);
+                        srchtxt = srchtxt.trim();
+                        var srchstr = srchtxt;
+                        if (exact === undefined)
+                        {
+                            if ((srchtxt.length > 1) &&
+                            (((srchtxt.charAt(0) === '\x27')&&(srchtxt.charAt(srchtxt.length - 1) === '\x27'))||
+                            ((srchtxt.charAt(0) === '\x22')&&(srchtxt.charAt(srchtxt.length - 1) === '\x22'))))
+                                {
+                                    srchstr = srchtxt.replace(/[x22|x27]/g,'');
+                                    exact = true;
+                                }
+                            else {exact = false;}
+                        }
+                        this.search(srchstr, result1[0], result1[1], sfrom, exact);
                     } else {
                         this.searchFromInputText(result1[0], `CodeQuery Search:${result1[1]}`, result1[1]);
                     }
@@ -159,7 +185,18 @@ export default class CQSearch {
         });
     }
 
-    public searchFromSelectedText() {
+    public searchFromSelectedTextExact() {
+        const editor = vscode.window.activeTextEditor;
+        if (editor === undefined) {
+            //console.log('CodeQuery Error: Could not get activeTexteditor');
+            return;
+        }
+        var text = editor.document.getText(editor.selection);
+        var srchstr = '\x22' + text + '\x22';
+        this.showSearchOptions(srchstr);
+    }
+
+    public searchFromSelectedTextFuzzy() {
         const editor = vscode.window.activeTextEditor;
         if (editor === undefined) {
             //console.log('CodeQuery Error: Could not get activeTexteditor');
