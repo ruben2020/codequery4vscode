@@ -6,6 +6,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.5.0] - 2021-07-20
+- New feature: Fuzzy search vs. exact search
+
 ## [0.4.1] - 2021-05-12
 - Updated with latest dependencies, to fix security vulnerabilities
 
