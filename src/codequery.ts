@@ -63,7 +63,10 @@ export default class CQSearch {
                             numofresults++;
                         }
                     }
-                    var item = this.sra.addSearchSummary(srchdescription, srchstring, numofresults, srchfrom);
+                    var srchstring2 : string;
+                    if (exact) { srchstring2 = '\x22' + srchstring + '\x22'; }
+                    else { srchstring2 = srchstring; }
+                    var item = this.sra.addSearchSummary(srchdescription, srchstring2, numofresults, srchfrom);
                     if (this.cqrp) {
                         this.cqrp.refresh();
                         if (this.mytreeview) {
@@ -131,7 +134,7 @@ export default class CQSearch {
                 (((inputtext.charAt(0) === '\x27')&&(inputtext.charAt(inputtext.length - 1) === '\x27'))||
                 ((inputtext.charAt(0) === '\x22')&&(inputtext.charAt(inputtext.length - 1) === '\x22'))))
                     {
-                        srchstr = inputtext.replace(/[x22|x27]/g,'');
+                        srchstr = inputtext.replace(/[\x22|\x27]/g,'');
                         exact = true;
                     }
                 this.search(srchstr, srchtype, srchtypetxt, 'inputbox', exact);
@@ -171,7 +174,7 @@ export default class CQSearch {
                             (((srchtxt.charAt(0) === '\x27')&&(srchtxt.charAt(srchtxt.length - 1) === '\x27'))||
                             ((srchtxt.charAt(0) === '\x22')&&(srchtxt.charAt(srchtxt.length - 1) === '\x22'))))
                                 {
-                                    srchstr = srchtxt.replace(/[x22|x27]/g,'');
+                                    srchstr = srchtxt.replace(/[\x22|\x27]/g,'');
                                     exact = true;
                                 }
                             else {exact = false;}
