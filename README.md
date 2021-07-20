@@ -142,11 +142,13 @@ Next, type "CodeQuery" into the inputbox. It will narrow down the results. Selec
 
 ![Command Palette](media/commandpalette2.png)
 
-Next, it will show you a quickpick menu with a list of possible search types. In this example, we select "1: Symbol".
+Next, it will show you a quickpick menu with a list of possible search types. In this example, we select `1: Symbol`.
 
 ![Search type selection](media/searchtypeselection.png)
 
-Next, it will show you an inputbox, where you can type a search phrase. In this example, we typed "fileviewer". Then press Enter.
+Next, it will show you an inputbox, where you can type a search phrase. In this example, we typed `fileviewer` for fuzzy search. Then press Enter.
+
+For exact string search (including case sensitive), please enclose the search term in quotes like this: `"fileviewer"`.
 
 ![Search inputbox](media/inputbox.png)
 
@@ -157,11 +159,11 @@ After this, the search results will be shown. How to browse the search results w
 
 First, open a source file from the current project or folder in Visual Studio Code, then make a text selection using the mouse or keyboard, by highlighting some text. In this example, we highlighted "sqlqueryresultlist" in listhandler.cpp, at line 53.
 
-After this, right-click and a dropdown menu will appear. Select `CodeQuery: Search from selected text`.
+After this, right-click and a dropdown menu will appear. Select `CodeQuery: Search from selected text (fuzzy)` for fuzzy search, or `CodeQuery: Search from selected text (exact)` for exact string search (including case sensitive).
 
 ![Text selection, then right-click](media/selectionrightclickmenu.png)
 
-Next, it will show you a quickpick menu with a list of possible search types. In this example, we select "1: Symbol".
+Next, it will show you a quickpick menu with a list of possible search types. In this example, we select `1: Symbol`.
 
 ![Search type selection](media/searchtypeselection.png)
 
@@ -176,11 +178,13 @@ First, click the CodeQuery icon on the leftmost panel. This will reveal the code
 
 After this, click on `[Click here to search]` on the codequery4vscode treeview.
 
-Next, it will show you a quickpick menu with a list of possible search types. In this example, we select "1: Symbol".
+Next, it will show you a quickpick menu with a list of possible search types. In this example, we select `1: Symbol`.
 
 ![Search type selection](media/searchtypeselection.png)
 
-Next, it will show you an inputbox, where you can type a search phrase. In this example, we typed "fileviewer". Then press Enter.
+Next, it will show you an inputbox, where you can type a search phrase. In this example, we typed `fileviewer` for fuzzy search. Then press Enter.
+
+For exact string search (including case sensitive), please enclose the search term in quotes like this: `"fileviewer"`.
 
 ![Search inputbox](media/inputbox.png)
 
@@ -195,15 +199,15 @@ Below that, a list of files where the search results appear in, would be shown.
 
 ![Search results1](media/searchresults1.png)
 
-Select a file on the list to expand it, then select a line which represents a result. In this example, we selected searchhandler.cpp and selected the line "213: if ((res.result_type == sqlquery...".  Then the file searchhandler.cpp will be opened and it will reveal line 213. Select other files and lines to see more results.
+Select a file on the list to expand it, then select a line which represents a result. In this example, we selected searchhandler.cpp and selected the line `213: if ((res.result_type == sqlquery...`.  Then the file searchhandler.cpp will be opened and it will reveal line 213. Select other files and lines to see more results.
 
 ![Search results2](media/searchresults2.png)
 
-The above is based on the search type of "1: Symbol".
+The above is based on the search type of `1: Symbol`.
 
 Click on `[Search again with another type]` under Search Summary, to repeat the search but to select a different search type.
 
-Next, it will show you a quickpick menu with a list of possible search types. In this example, we select "3: Class or Struct".
+Next, it will show you a quickpick menu with a list of possible search types. In this example, we select `3: Class or Struct`.
 
 ![Search type selection](media/searchtypeselection.png)
 
