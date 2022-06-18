@@ -31,6 +31,25 @@ export default class CQSearch {
         this.mytreeview = tview;
     }
 
+    private find_cqdb(rootpath: vscode.WorkspaceFolder): string {
+        var dbpath1 = path.join(rootpath.uri.fsPath, 'cq.db');
+        var dbpath2 = path.join(rootpath.uri.fsPath, '.vscode');
+        dbpath2 = path.join(dbpath2, 'cq.db');
+        var dbpath3 = path.join(rootpath.uri.fsPath, '.vscode');
+        dbpath3 = path.join(dbpath3, 'codequery');
+        dbpath3 = path.join(dbpath3, 'cq.db');
+        if (fs.existsSync(dbpath1)) {
+            return dbpath1;
+        }
+        else if (fs.existsSync(dbpath2)) {
+            return dbpath2;
+        }
+        else if (fs.existsSync(dbpath3)) {
+            return dbpath3;
+        }
+        return dbpath1;
+    }
+
     private search(srchstring: string, srchtype: string, srchdescription: string, srchfrom: string, exact: boolean) {
         //console.log('Search for ' + srchstring + ' with search type ' + srchtype);
         if (srchstring.length === 0) {return;}
@@ -39,7 +58,7 @@ export default class CQSearch {
             return;
         }
         const rootpath = vscode.workspace.workspaceFolders[0];
-        var dbpath = path.join(rootpath.uri.fsPath, 'cq.db');
+        var dbpath = this.find_cqdb(rootpath);
         if (!fs.existsSync(dbpath)) {
             vscode.window.showInformationMessage('CodeQuery Error: Could not find' + dbpath);
             return;

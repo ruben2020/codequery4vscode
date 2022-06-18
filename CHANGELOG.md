@@ -6,6 +6,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.7.0] - 2022-06-18
+- cq.db file will now be searched for in 3 locations as stated in the README.md file
+
 ## [0.6.0] - 2022-04-19
 - Updated with latest dependencies, to fix security vulnerabilities
 

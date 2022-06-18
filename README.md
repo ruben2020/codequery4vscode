@@ -14,7 +14,7 @@ The databases of cscope and ctags would be processed by the `cqmakedb` tool to g
 The CodeQuery database file can be queried on Visual Studio Code using this extension. This Visual Studio Code Extension makes use of Codequery CLI tool `cqsearch` to perform the queries.
 
 
-## Latest version = 0.6.0
+## Latest version = 0.7.0
 
 Please read [CHANGELOG](CHANGELOG.md) to discover the latest changes in this release.
 
@@ -68,11 +68,11 @@ Alternatively, in Visual Studio Code, press Ctrl+P, then enter `ext install rube
 
 ## How do I prepare my source code for use with this extension?
 
-Please follow the instructions found on the [CodeQuery](https://github.com/ruben2020/codequery) page to create a CodeQuery database called `cq.db` (with exactly this filename and extension) on the base folder of your source code.
+Please follow the instructions found on the [CodeQuery](https://github.com/ruben2020/codequery) page to create a CodeQuery database called `cq.db` (with exactly this filename and extension) on the base folder of your source code (i.e. `{workspace}/cq.db`).
 
 Let me provide an example here on how to prepare the source code of CodeQuery itself.
 
-In Linux or Mac, follow these steps:
+In Linux or Mac, follow these steps for C/C++ source code:
 
 ```bash
 cd ~/gitrepo
@@ -91,7 +91,7 @@ ctags --fields=+i -n -L ./cscope.files
 cqmakedb -s ./cq.db -c ./cscope.out -t ./tags -p
 ```
 
-In Windows, follow these steps:
+In Windows, follow these steps for C/C++ source code:
 
 ```bash
 cd c:\gitrepo
@@ -113,6 +113,8 @@ cqmakedb -s cq.db -c cscope.out -t tags -p
 Please replace the wildcard expressions above with *.java, *.py, *.rb, *.go and *.js respectively for Java, Python, Ruby, Go and Javascript. Details can be found on the [CodeQuery](https://github.com/ruben2020/codequery) page.
 
 You may also want to add `cq.db` to the `.gitignore` and `.vscodeignore` files on the base folder of your source code.
+
+This extension will search for the `cq.db` file in 3 locations in this order: `{workspace}/cq.db`, `{workspace}/.vscode/cq.db`, `{workspace}/.vscode/codequery/cq.db`. You may move the `cq.db` file to any one of these locations, according to your preference.
 
 If the source code becomes updated, you need to repeat the steps above to regenerate the CodeQuery database.
 
