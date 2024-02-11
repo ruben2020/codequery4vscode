@@ -101,6 +101,12 @@ export class SRAggregator {
 			title: 'CodeQuery: Search from input text',
 			arguments: []
 		});
+		var item2 = new SResult('[Click here to rebuild database]', 0, '', vscode.TreeItemCollapsibleState.None, {
+			command: 'codequery4vscode.rebuildDatabase',
+			title: 'CodeQuery: Rebuild database',
+			arguments: []
+		});
+		this.toplevel.unshift(item2);
 		this.toplevel.unshift(item);
 	}
 

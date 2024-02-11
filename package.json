@@ -57,6 +57,10 @@
 			{
 				"command": "codequery4vscode.searchAgain",
 				"title": "CodeQuery: Search again"
+			},
+			{
+				"command": "codequery4vscode.rebuildDatabase",
+				"title": "CodeQuery: Rebuild database"
 			}
 		],
 		"menus": {
@@ -90,7 +94,12 @@
 					"command": "codequery4vscode.searchAgain",
 					"when": "false",
 					"title": "CodeQuery:Search again"
-				}
+				},
+				{
+					"command": "codequery4vscode.rebuildDatabase",
+					"when": "true",
+					"title": "CodeQuery: Rebuild database"
+				}	
 			],
 			"editor/context": [
 				{

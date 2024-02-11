@@ -34,7 +34,9 @@ export function activate(context: vscode.ExtensionContext) {
 		'codequery4vscode.searchFromInputText', () => cq.showSearchOptions()));
 	context.subscriptions.push(vscode.commands.registerCommand(
 		'codequery4vscode.searchAgain', (srchstring: string, srchfrom: string) => cq.showSearchOptions(srchstring, srchfrom)));
-	}
+	context.subscriptions.push(vscode.commands.registerCommand(
+		'codequery4vscode.rebuildDatabase', () => cq.rebuildDatabase()));
+}
 
 // this method is called when your extension is deactivated
 export function deactivate() {}

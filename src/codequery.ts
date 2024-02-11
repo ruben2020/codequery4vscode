@@ -31,22 +31,24 @@ export default class CQSearch {
     }
 
     private find_cqdb(rootpath: vscode.WorkspaceFolder): string {
-        var dbpath1 = path.join(rootpath.uri.fsPath, 'cq.db');
-        var dbpath2 = path.join(rootpath.uri.fsPath, '.vscode');
-        dbpath2 = path.join(dbpath2, 'cq.db');
         var dbpath3 = path.join(rootpath.uri.fsPath, '.vscode');
         dbpath3 = path.join(dbpath3, 'codequery');
         dbpath3 = path.join(dbpath3, 'cq.db');
-        if (fs.existsSync(dbpath1)) {
-            return dbpath1;
+        return dbpath3;
+    }
+
+    private find_rebuild_script(rootpath: vscode.WorkspaceFolder): string {
+        var path1 = path.join(rootpath.uri.fsPath, '.vscode');
+        path1 = path.join(path1, 'codequery');
+        var path2 = path.join(path1, 'rebuild.bat');
+        path1 = path.join(path1, 'rebuild.sh');
+        if (fs.existsSync(path1)) {
+            return path1;
         }
-        else if (fs.existsSync(dbpath2)) {
-            return dbpath2;
+        else if (fs.existsSync(path2)) {
+            return path2;
         }
-        else if (fs.existsSync(dbpath3)) {
-            return dbpath3;
-        }
-        return dbpath1;
+        return path1;
     }
 
     private search(srchstring: string, srchtype: string, srchdescription: string, 
@@ -60,7 +62,7 @@ export default class CQSearch {
         const rootpath = vscode.workspace.workspaceFolders[0];
         var dbpath = this.find_cqdb(rootpath);
         if (!fs.existsSync(dbpath)) {
-            vscode.window.showInformationMessage('CodeQuery Error: Could not find' + dbpath);
+            vscode.window.showInformationMessage('CodeQuery Error: Could not find ' + dbpath);
             return;
         }
         var exactstr : string;
@@ -277,4 +279,32 @@ export default class CQSearch {
         this.showSearchOptions(text);
     }
 
+    public rebuildDatabase() {
+        if (vscode.workspace.workspaceFolders === undefined) {
+            vscode.window.showInformationMessage('CodeQuery Error: Could not get rootpath');
+            return;
+        }
+        const rootpath = vscode.workspace.workspaceFolders[0];
+        var script = this.find_rebuild_script(rootpath);
+        if (!fs.existsSync(script)) {
+            vscode.window.showInformationMessage('CodeQuery Error: Could not find ' + script);
+            return;
+        }
+        try { 
+            fs.accessSync(script, fs.constants.F_OK | fs.constants.X_OK);
+        } catch (err) { 
+            vscode.window.showInformationMessage('CodeQuery Error: Could not execute file ' + script);
+            return;
+        }
+        var cmd: string = "cd " + rootpath.uri.fsPath + " && " + script;
+        cp.exec(cmd, (err, stdout, stderr) => {
+            if (err === null) {
+                vscode.window.showInformationMessage("CodeQuery rebuild script was executed successfully.");
+            }
+            else {
+                vscode.window.showInformationMessage('CodeQuery Error: ' + stdout + "\n" + stderr);
+            }
+    });
+
+    }
 }
