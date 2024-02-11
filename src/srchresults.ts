@@ -5,18 +5,21 @@ import { setMaxListeners } from 'process';
 
 export class SRAggregator {
 	private toplevel: SResult[];
+	private rootpath: string;
 
 	constructor () {
 		this.toplevel = [];
 		this.addSearchHelp();
+		this.rootpath = '';
 	}
 
 	get treedata(): SResult[] {
 		return this.toplevel;
 	}
 
-	public reset() {
+	public reset(rootp: string) {
 		this.toplevel = [];
+		this.rootpath = rootp;
 	}
 
 	private formatURI(fullpath: string, linenum: string): string {
@@ -25,6 +28,16 @@ export class SRAggregator {
 			fp = fp.replace('$HOME', process.env.HOME);
 		}
 		return `${fp}\t${linenum}`;
+	}
+
+	private shortfullpath(fullpath: string): string {
+		var fp = fullpath;
+		if (process.env.HOME) {
+			fp = fp.replace('$HOME', process.env.HOME);
+		}
+		fp = fp.replace(this.rootpath, "");
+		fp = fp.replace(/^[\\\/]*/,"");
+		return `${fp}`;
 	}
 
 	private sortRecords() {
@@ -54,6 +67,7 @@ export class SRAggregator {
 		stext: string
 	) {
 		var fullpath2 = this.formatURI(fullpath, linenum);
+		var shortfp = this.shortfullpath(fullpath);
 		var labeltext = `${linenum}: ${previewtext}`;
 		var item2: SResult = new SResult(labeltext, parseInt(linenum, 10), stext, vscode.TreeItemCollapsibleState.None, {
 			command: 'codequery4vscode.openfile',
@@ -63,7 +77,7 @@ export class SRAggregator {
 		var notfound: boolean = true;
 		if (this.toplevel.length > 0) {
 			for (var item of this.toplevel) {
-				if (item.label === filename) {
+				if (item.label === shortfp) {
 					notfound = false;
 					item2.parent = item;
 					item.children.push(item2);
@@ -72,7 +86,7 @@ export class SRAggregator {
 			}
 		}
 		if (notfound) {
-			var item: SResult = new SResult(filename, 0, '', vscode.TreeItemCollapsibleState.Collapsed);
+			var item: SResult = new SResult(shortfp, 0, '', vscode.TreeItemCollapsibleState.Collapsed);
 			var arr: SResult[] = [];
 			item2.parent = item;
 			arr.push(item2);

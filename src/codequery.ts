@@ -4,7 +4,6 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as cp from 'child_process';
-import { isNull } from 'util';
 import {SRAggregator, SResult} from './srchresults';
 import CQResultsProvider from './cqtreedataprov';
 
@@ -50,7 +49,8 @@ export default class CQSearch {
         return dbpath1;
     }
 
-    private search(srchstring: string, srchtype: string, srchdescription: string, srchfrom: string, exact: boolean) {
+    private search(srchstring: string, srchtype: string, srchdescription: string, 
+        srchfrom: string, exact: boolean, pathfilter?: string|undefined) {
         //console.log('Search for ' + srchstring + ' with search type ' + srchtype);
         if (srchstring.length === 0) {return;}
         if (vscode.workspace.workspaceFolders === undefined) {
@@ -66,12 +66,19 @@ export default class CQSearch {
         var exactstr : string;
         if (exact) {exactstr = '-e';}
         else {exactstr = '-f';}
-        var cmd = `cqsearch -s ${dbpath} -p ${srchtype} -t ${srchstring} -l 0 ${exactstr} -u`;
+        if (pathfilter)
+        {
+            var cmd = `cqsearch -s ${dbpath} -p ${srchtype} -t ${srchstring} -l 0 ${exactstr} -u -b ${pathfilter}`;
+        }
+        else
+        {
+            var cmd = `cqsearch -s ${dbpath} -p ${srchtype} -t ${srchstring} -l 0 ${exactstr} -u`;
+        }
         cp.exec(cmd, (err, stdout, stderr) => {
-                if (isNull(err)) {
+                if (err === null) {
                     var numofresults = 0;
                     var lines = stdout.split("\n");
-                    this.sra.reset();
+                    this.sra.reset(rootpath.uri.fsPath);
                     for (var line of lines) {
                         var cols = line.split("\t");
                         if (cols.length === 3) {
@@ -85,6 +92,10 @@ export default class CQSearch {
                     var srchstring2 : string;
                     if (exact) { srchstring2 = '\x22' + srchstring + '\x22'; }
                     else { srchstring2 = srchstring; }
+                    if (pathfilter)
+                    {
+                        srchstring2 = srchstring2 + '[' + pathfilter + ']';
+                    }
                     var item = this.sra.addSearchSummary(srchdescription, srchstring2, numofresults, srchfrom);
                     if (this.cqrp) {
                         this.cqrp.refresh();
@@ -138,7 +149,7 @@ export default class CQSearch {
     private searchFromInputText(srchtype: string, titletext: string, srchtypetxt: string) {
         var input = vscode.window.createInputBox();
         input.title = titletext;
-        input.prompt = 'Enter text to search; in quotes ("") for exact, or without, for fuzzy';
+        input.prompt = 'Enter text to search; in quotes ("") for exact, or without, for fuzzy. After this, a path filter text can optionally be added in square brackets (e.g. [src] or [*.h]). Please see documentation for details.';
         input.enabled = true;
         input.busy = false;
         input.password = false;
@@ -149,6 +160,18 @@ export default class CQSearch {
                 inputtext = inputtext.trim();
                 var srchstr = inputtext;
                 var exact = false;
+                var pathfilter = undefined;
+                if (inputtext.length > 1)
+                {
+                    var reg1 = /\[(.*)\]$/;
+                    var matches = inputtext.match(reg1);
+                    if (matches?.length === 2)
+                    {
+                        pathfilter = matches[1];
+                        inputtext = inputtext.replace(/\[(.*)\]/,'');
+                        srchstr = inputtext;
+                    }
+                }
                 if ((inputtext.length > 1) &&
                 (((inputtext.charAt(0) === '\x27')&&(inputtext.charAt(inputtext.length - 1) === '\x27'))||
                 ((inputtext.charAt(0) === '\x22')&&(inputtext.charAt(inputtext.length - 1) === '\x22'))))
@@ -156,7 +179,14 @@ export default class CQSearch {
                         srchstr = inputtext.replace(/[\x22|\x27]/g,'');
                         exact = true;
                     }
-                this.search(srchstr, srchtype, srchtypetxt, 'inputbox', exact);
+                if (pathfilter)
+                {
+                    this.search(srchstr, srchtype, srchtypetxt, 'inputbox', exact, pathfilter);
+                }
+                else
+                {
+                    this.search(srchstr, srchtype, srchtypetxt, 'inputbox', exact);
+                }
             }
         );
         input.show();
@@ -187,8 +217,20 @@ export default class CQSearch {
                         else {sfrom = 'text selection';}
                         srchtxt = srchtxt.trim();
                         var srchstr = srchtxt;
+                        var pathfilter = undefined;
                         if (exact === undefined)
                         {
+                            if (srchtxt.length > 1)
+                            {
+                                var reg1 = /\[(.*)\]$/;
+                                var matches = srchtxt.match(reg1);
+                                if (matches?.length === 2)
+                                {
+                                    pathfilter = matches[1];
+                                    srchtxt = srchtxt.replace(/\[(.*)\]/,'');
+                                    srchstr = srchtxt;
+                                }
+                            }
                             if ((srchtxt.length > 1) &&
                             (((srchtxt.charAt(0) === '\x27')&&(srchtxt.charAt(srchtxt.length - 1) === '\x27'))||
                             ((srchtxt.charAt(0) === '\x22')&&(srchtxt.charAt(srchtxt.length - 1) === '\x22'))))
@@ -198,7 +240,14 @@ export default class CQSearch {
                                 }
                             else {exact = false;}
                         }
-                        this.search(srchstr, result1[0], result1[1], sfrom, exact);
+                        if (pathfilter)
+                        {
+                            this.search(srchstr, result1[0], result1[1], sfrom, exact, pathfilter);
+                        }
+                        else
+                        {
+                            this.search(srchstr, result1[0], result1[1], sfrom, exact);
+                        }
                     } else {
                         this.searchFromInputText(result1[0], `CodeQuery Search:${result1[1]}`, result1[1]);
                     }
