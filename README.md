@@ -36,7 +36,7 @@ Please read [CHANGELOG](CHANGELOG.md) to discover the latest changes in this rel
 
 ## What does it cost? How is it licensed?
 
-This software is freeware and free open source software. It can be used in a commercial environment for free, for an unlimited time. The same applies to [CodeQuery](https://github.com/ruben2020/codequery).
+This software is freeware and free open source software. It can be used in a commercial environment for free, for an unlimited period of time. The same applies to [CodeQuery](https://github.com/ruben2020/codequery).
 
 This software is licensed under the MIT License. Please see the [LICENSE](LICENSE) file for more details.
 
@@ -68,60 +68,101 @@ Alternatively, in Visual Studio Code, press Ctrl+P, then enter `ext install rube
 
 ## How do I prepare my source code for use with this extension?
 
-Please follow the instructions found on the [CodeQuery](https://github.com/ruben2020/codequery) page to create a CodeQuery database called `cq.db` (with exactly this filename and extension) on the base folder of your source code (i.e. `{workspace}/cq.db`).
+Let's assume that the base folder of your source code is `[project_base_path]`.
+
+The extension will look for the CodeQuery database in `[project_base_path]/.vscode/codequery/cq.db` exactly.
+
+The CodeQuery database can be rebuilt by the extension using either a Bash script in `{project_base_path}/.vscode/codequery/rebuild.sh` or a Windows batch file in `{project_base_path}/.vscode/codequery/rebuild.bat`.
+
+The Bash script or Windows batch file can be called manually or through the codequery4vscode Visual Studio Code Extension. It's meant to be executed when the current working directory is `[project_base_path]`
 
 Let me provide an example here on how to prepare the source code of CodeQuery itself.
 
 In Linux or Mac, follow these steps for C/C++ source code:
 
 ```bash
-cd ~/gitrepo
+cd ~/repo
 git clone https://github.com/ruben2020/codequery.git
 cd codequery
-find . -iname "*.c"    > ./cscope.files
-find . -iname "*.cpp" >> ./cscope.files
-find . -iname "*.cxx" >> ./cscope.files
-find . -iname "*.cc " >> ./cscope.files
-find . -iname "*.h"   >> ./cscope.files
-find . -iname "*.hpp" >> ./cscope.files
-find . -iname "*.hxx" >> ./cscope.files
-find . -iname "*.hh " >> ./cscope.files
-cscope -cb
-ctags --fields=+i -n -L ./cscope.files
-cqmakedb -s ./cq.db -c ./cscope.out -t ./tags -p
+mkdir -p .vscode/codequery
+```
+
+Here, `[project_base_path]` is `~/repo/codequery`.
+
+Then create the script `~/repo/codequery/.vscode/codequery/rebuild.sh` with these contents using vim, gedit or your favorite editor:
+
+```bash
+#!/bin/bash
+rm -f .vscode/codequery/cscope.out
+rm -f .vscode/codequery/tags
+find . -iname "*.h"    > .vscode/codequery/cscope.files
+find . -iname "*.hpp" >> .vscode/codequery/cscope.files
+find . -iname "*.hxx" >> .vscode/codequery/cscope.files
+find . -iname "*.hh"  >> .vscode/codequery/cscope.files
+find . -iname "*.c"   >> .vscode/codequery/cscope.files
+find . -iname "*.cpp" >> .vscode/codequery/cscope.files
+find . -iname "*.cxx" >> .vscode/codequery/cscope.files
+find . -iname "*.cc"  >> .vscode/codequery/cscope.files
+cscope -cb -i .vscode/codequery/cscope.files -f .vscode/codequery/cscope.out
+ctags --fields=+i -n -L .vscode/codequery/cscope.files -f .vscode/codequery/tags
+cqmakedb -s .vscode/codequery/cq.db -c .vscode/codequery/cscope.out -t .vscode/codequery/tags -p -d
+```
+
+And then make it executable:
+
+```bash
+chmod +x ~/repo/codequery/.vscode/codequery/rebuild.sh
+```
+
+You can test the script by calling:
+
+```bash
+cd ~/repo/codequery/
+./.vscode/codequery/rebuild.sh
 ```
 
 In Windows, follow these steps for C/C++ source code:
 
 ```bash
-cd c:\gitrepo
+cd c:\repo
 git clone https://github.com/ruben2020/codequery.git
 cd codequery
-dir /b/a/s *.c    > cscope.files   
-dir /b/a/s *.cpp >> cscope.files   
-dir /b/a/s *.cxx >> cscope.files   
-dir /b/a/s *.cc  >> cscope.files   
-dir /b/a/s *.h   >> cscope.files   
-dir /b/a/s *.hpp >> cscope.files   
-dir /b/a/s *.hxx >> cscope.files   
-dir /b/a/s *.hh  >> cscope.files   
-cscope -cb
-ctags --fields=+i -n -L cscope.files
-cqmakedb -s cq.db -c cscope.out -t tags -p
+md .vscode
+md .vscode\codequery
+```
+
+Then create the Windows batch file `c:\repo\codequery\.vscode\codequery\rebuild.bat` with these contents using Notepad or your favorite editor:
+
+```bash
+del /Q /F .vscode\codequery\cscope.out
+del /Q /F .vscode\codequery\tags
+dir /b/a/s *.h    > .vscode\codequery\cscope.files
+dir /b/a/s *.hpp >> .vscode\codequery\cscope.files
+dir /b/a/s *.hxx >> .vscode\codequery\cscope.files
+dir /b/a/s *.hh  >> .vscode\codequery\cscope.files
+dir /b/a/s *.c   >> .vscode\codequery\cscope.files
+dir /b/a/s *.cpp >> .vscode\codequery\cscope.files
+dir /b/a/s *.cxx >> .vscode\codequery\cscope.files
+dir /b/a/s *.cc  >> .vscode\codequery\cscope.files
+cscope -cb -i .vscode\codequery\cscope.files -f .vscode\codequery\cscope.out
+ctags --fields=+i -n -L .vscode\codequery\cscope.files -f .vscode\codequery\tags
+cqmakedb -s .vscode\codequery\cq.db -c .vscode\codequery\cscope.out -t .vscode\codequery\tags -p -d
+```
+
+You can test the Windows batch file by calling the following on a command terminal window:
+
+```bash
+cd c:\repo\codequery
+.vscode\codequery\rebuild.bat
 ```
 
 Please replace the wildcard expressions above with *.java, *.py, *.rb, *.go and *.js respectively for Java, Python, Ruby, Go and Javascript. Details can be found on the [CodeQuery](https://github.com/ruben2020/codequery) page.
 
-You may also want to add `cq.db` to the `.gitignore` and `.vscodeignore` files on the base folder of your source code.
-
-This extension will search for the `cq.db` file in 3 locations in this order: `{workspace}/cq.db`, `{workspace}/.vscode/cq.db`, `{workspace}/.vscode/codequery/cq.db`. You may move the `cq.db` file to any one of these locations, according to your preference.
-
-If the source code becomes updated, you need to repeat the steps above to regenerate the CodeQuery database.
-
+You may also want to add `.vecode` to the `.gitignore` file on the base folder of your source code.
 
 ## How do I search or query my code using this extension on Visual Studio Code?
 
-First, open the base folder of your source code by clicking on `File` on the menu of Visual Studio Code, followed by selecting `Open Folder...`. Alternatively, press Ctrl+K Ctrl+O. If I use the same example as before, this refers to `C:\gitrepo\codequery` on Windows or `/home/johndoe/gitrepo/codequery` on Linux, assuming your username on Linux is johndoe.
+First, open the base folder of your source code by clicking on `File` on the menu of Visual Studio Code, followed by selecting `Open Folder...`. Alternatively, press Ctrl+K Ctrl+O. If I use the same example as before, this refers to `C:\repo\codequery` on Windows or `/home/johndoe/repo/codequery` on Linux, assuming your username on Linux is johndoe.
 
 There are 3 ways to search or query code using this extension:
 
@@ -151,6 +192,12 @@ Next, it will show you a quickpick menu with a list of possible search types. In
 Next, it will show you an inputbox, where you can type a search phrase. In this example, we typed `fileviewer` for fuzzy search. Then press Enter.
 
 For exact string search (including case sensitive), please enclose the search term in quotes like this: `"fileviewer"`.
+
+The path filter can be included in square brackets after the search term.
+
+To search for the term `fileviewer` as fuzzy search, but restrict it to source code files below the `gui` folder, type in `fileviewer[gui]`. To search for the term `fileviewer` as fuzzy search, but restrict it to `*.h` files only, type in `fileviewer[*.h]`.
+
+To search for the term `fileviewer` as exact term search, but restrict it to source code files below the `gui` folder, type in `"fileviewer"[gui]`. To search for the term `fileviewer` as exact term search, but restrict it to `*.h` files only, type in `"fileviewer"[*.h]`.
 
 ![Search inputbox](media/inputbox.png)
 
@@ -187,6 +234,12 @@ Next, it will show you a quickpick menu with a list of possible search types. In
 Next, it will show you an inputbox, where you can type a search phrase. In this example, we typed `fileviewer` for fuzzy search. Then press Enter.
 
 For exact string search (including case sensitive), please enclose the search term in quotes like this: `"fileviewer"`.
+
+The path filter can be included in square brackets after the search term.
+
+To search for the term `fileviewer` as fuzzy search, but restrict it to source code files below the `gui` folder, type in `fileviewer[gui]`. To search for the term `fileviewer` as fuzzy search, but restrict it to `*.h` files only, type in `fileviewer[*.h]`.
+
+To search for the term `fileviewer` as exact term search, but restrict it to source code files below the `gui` folder, type in `"fileviewer"[gui]`. To search for the term `fileviewer` as exact term search, but restrict it to `*.h` files only, type in `"fileviewer"[*.h]`.
 
 ![Search inputbox](media/inputbox.png)
 
