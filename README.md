@@ -105,7 +105,8 @@ find . -iname "*.cxx" >> .vscode/codequery/cscope.files
 find . -iname "*.cc"  >> .vscode/codequery/cscope.files
 cscope -cb -i .vscode/codequery/cscope.files -f .vscode/codequery/cscope.out
 ctags --fields=+i -n -L .vscode/codequery/cscope.files -f .vscode/codequery/tags
-cqmakedb -s .vscode/codequery/cq.db -c .vscode/codequery/cscope.out -t .vscode/codequery/tags -p -d
+cd .vscode/codequery
+cqmakedb -s cq.db -c cscope.out -t tags -p -d
 ```
 
 And then make it executable:
@@ -146,7 +147,8 @@ dir /b/a/s *.cxx >> .vscode\codequery\cscope.files
 dir /b/a/s *.cc  >> .vscode\codequery\cscope.files
 cscope -cb -i .vscode\codequery\cscope.files -f .vscode\codequery\cscope.out
 ctags --fields=+i -n -L .vscode\codequery\cscope.files -f .vscode\codequery\tags
-cqmakedb -s .vscode\codequery\cq.db -c .vscode\codequery\cscope.out -t .vscode\codequery\tags -p -d
+cd .vscode\codequery
+cqmakedb -s cq.db -c cscope.out -t tags -p -d
 ```
 
 You can test the Windows batch file by calling the following on a command terminal window:
@@ -224,7 +226,7 @@ After this, the search results will be shown. How to browse the search results w
 
 ## Method 2 for searching or querying code
 
-First, open a source file from the current project or folder in Visual Studio Code, then make a text selection using the mouse or keyboard, by highlighting some text. In this example, we highlighted "sqlqueryresultlist" in listhandler.cpp, at line 53.
+First, open a source file from the current project or folder in Visual Studio Code, then make a text selection using the mouse or keyboard, by highlighting some text. In this example, we highlighted "updateListHeaders" in listhandler.cpp, at line 51.
 
 After this, right-click and a dropdown menu will appear. Select `CodeQuery: Search from selected text (fuzzy)` for fuzzy search, or `CodeQuery: Search from selected text (exact)` for exact string search (including case sensitive).
 
