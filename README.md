@@ -74,7 +74,7 @@ The extension will look for the CodeQuery database in `[project_base_path]/.vsco
 
 The CodeQuery database can be rebuilt by the extension using either a Bash script in `{project_base_path}/.vscode/codequery/rebuild.sh` or a Windows batch file in `{project_base_path}/.vscode/codequery/rebuild.bat`.
 
-The Bash script or Windows batch file can be called manually or through the codequery4vscode Visual Studio Code Extension. It's meant to be executed when the current working directory is `[project_base_path]`
+The Bash script or Windows batch file can be called manually or through the codequery4vscode Visual Studio Code extension. It's meant to be executed when the current working directory is `[project_base_path]`
 
 Let me provide an example here on how to prepare the source code of CodeQuery itself.
 
@@ -160,6 +160,24 @@ Please replace the wildcard expressions above with *.java, *.py, *.rb, *.go and 
 
 You may also want to add `.vecode` to the `.gitignore` file on the base folder of your source code.
 
+
+## How do I build or rebuild the CodeQuery database using this extension on Visual Studio Code?
+
+First, open the Command Palette using Ctrl+Shift+P. Alternatively, click `View` on the Visual Studio Code menu, then select `Command Palette...`.
+
+You will then see this:
+
+![Command Palette](media/commandpalette1.png)
+
+Next, type "CodeQuery" into the inputbox. It will narrow down the results. Select `CodeQuery: Rebuild database`.
+
+![Command Palette](media/commandpalette3.png)
+
+It could take a while to complete depending on the number of source code files to index. It will show a pop-up stating if the database rebuild was successful or failed.
+
+If `{project_base_path}/.vscode/codequery/rebuild.sh` (in Linux or Mac) or `{project_base_path}/.vscode/codequery/rebuild.bat` (in Windows) cannot be found or cannot be executed (due to insufficient permissions), an error notification will pop-up.
+
+
 ## How do I search or query my code using this extension on Visual Studio Code?
 
 First, open the base folder of your source code by clicking on `File` on the menu of Visual Studio Code, followed by selecting `Open Folder...`. Alternatively, press Ctrl+K Ctrl+O. If I use the same example as before, this refers to `C:\repo\codequery` on Windows or `/home/johndoe/repo/codequery` on Linux, assuming your username on Linux is johndoe.
@@ -187,7 +205,7 @@ Next, type "CodeQuery" into the inputbox. It will narrow down the results. Selec
 
 Next, it will show you a quickpick menu with a list of possible search types. In this example, we select `1: Symbol`.
 
-![Search type selection](media/searchtypeselection.png)
+![Search type selection](media/searchtypeselection1.png)
 
 Next, it will show you an inputbox, where you can type a search phrase. In this example, we typed `fileviewer` for fuzzy search. Then press Enter.
 
@@ -214,7 +232,7 @@ After this, right-click and a dropdown menu will appear. Select `CodeQuery: Sear
 
 Next, it will show you a quickpick menu with a list of possible search types. In this example, we select `1: Symbol`.
 
-![Search type selection](media/searchtypeselection.png)
+![Search type selection](media/searchtypeselection1.png)
 
 After this, the search results will be shown. How to browse the search results will be explained below.
 
@@ -229,7 +247,7 @@ After this, click on `[Click here to search]` on the codequery4vscode treeview.
 
 Next, it will show you a quickpick menu with a list of possible search types. In this example, we select `1: Symbol`.
 
-![Search type selection](media/searchtypeselection.png)
+![Search type selection](media/searchtypeselection1.png)
 
 Next, it will show you an inputbox, where you can type a search phrase. In this example, we typed `fileviewer` for fuzzy search. Then press Enter.
 
@@ -254,7 +272,7 @@ Below that, a list of files where the search results appear in, would be shown.
 
 ![Search results1](media/searchresults1.png)
 
-Select a file on the list to expand it, then select a line which represents a result. In this example, we selected searchhandler.cpp and selected the line `213: if ((res.result_type == sqlquery...`.  Then the file searchhandler.cpp will be opened and it will reveal line 213. Select other files and lines to see more results.
+Select a file on the list to expand it, then select a line which represents a result. In this example, we selected `cli/main_cli.cpp` and selected the line `181: if (resultlst.result_type == sqlquery...`.  Then the file main_cli.cpp will be opened and it will reveal line 181. Select other files and lines to see more results.
 
 ![Search results2](media/searchresults2.png)
 
@@ -264,7 +282,7 @@ Click on `[Search again with another type]` under Search Summary, to repeat the 
 
 Next, it will show you a quickpick menu with a list of possible search types. In this example, we select `3: Class or Struct`.
 
-![Search type selection](media/searchtypeselection.png)
+![Search type selection](media/searchtypeselection2.png)
 
 Next, the results will be updated as follows.
 
