@@ -38,9 +38,10 @@ export default class CQResultsProvider implements vscode.TreeDataProvider<SResul
 			}
 			vscode.workspace.openTextDocument(fileuri).then(doc => {
 				vscode.window.showTextDocument(doc).then(editor => {
-					var linenum1 = parseInt(linenum, 10);
-					var remaining = editor.document.lineCount - linenum1;
-					editor.revealRange(this.calcRange(linenum1, remaining));
+					var linenum1 = parseInt(linenum, 10) - 1;
+					var pos = new vscode.Position(linenum1, 0);
+					editor.selection = new vscode.Selection(pos, pos);
+					editor.revealRange(new vscode.Range(pos, pos), vscode.TextEditorRevealType.InCenter);
 				});
 			  });
 		}
