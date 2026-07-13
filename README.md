@@ -14,7 +14,7 @@ The databases of cscope and ctags would be processed by the `cqmakedb` tool to g
 The CodeQuery database file can be queried on Visual Studio Code using this extension. This Visual Studio Code Extension makes use of Codequery CLI tool `cqsearch` to perform the queries.
 
 
-## Latest version = 0.8.1
+## Latest version = 0.9.0
 
 Please read [CHANGELOG](CHANGELOG.md) to discover the latest changes in this release.
 
@@ -306,12 +306,13 @@ Website: [codequery4vscode website](https://github.com/ruben2020/codequery4vscod
 * Report bugs
 * Provide feedback, new ideas, suggestions etc. What would you like to see?
 * Tell your friends, recommend it on StackOverflow or social media
-* Fix bugs (see Issues tab)
+* Fix bugs (see Issues tab), and submit pull requests
 * Give us a good rating and review at the [Visual Studio Code Extension Marketplace](https://marketplace.visualstudio.com/VSCode) page [ruben2020.codequery4vscode](https://marketplace.visualstudio.com/items?itemName=ruben2020.codequery4vscode)
 
 
 ## List of Contributors
 
 [ruben2020](https://github.com/ruben2020)      
+[Patrick Regnouf](https://github.com/intera91) aka [pgmail](https://github.com/pgmail)        
 (More welcomed)
 

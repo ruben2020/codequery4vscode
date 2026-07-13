@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-07-13
+- Bugfix: When a result is selected, it will now open the file to show the correct line
+- Bugfix: When a result is selected, it will now move the cursor correctly
+- Updated with latest dependencies, to fix security vulnerabilities
+
+
 ## [0.8.1] - 2024-02-12
 - New feature: Path filter support added for search text input
 - New feature: Rebuilding of database through command palette
